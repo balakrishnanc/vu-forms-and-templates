@@ -302,33 +302,74 @@
 %% Turn on all editing macros.
 %%
 
-\newcommand{\editlabel}[1]{\raisebox{.35ex}{\scriptsize \scshape[#1]}}
-% \newcommand{\editlabel}[1]{}
+%% If you want to label the text with some markup indicating its type or state
+%% (e.g., text to be reviewed or completed), then uncomment the following.
+%%
+% \newcommand{\editlabel}[1]{\raisebox{.35ex}{\scriptsize \scshape[#1]}}
+%%
+%% If you only want to use colors to indicate text in various states,
+%% then uncomment the following.
+\newcommand{\editlabel}[1]{}
 
 %% Text to be reviewed (by senior authors).
-\newcommand{\REVIEW}[1]{\textcolor[HTML]{377eb8}{\editlabel{Review} #1}\xspace{}}
+\newcommand{\REVIEW}[1]{%
+  \textcolor[HTML]{377eb8}{%
+    \editlabel{Review}\@#1}\xspace{}}
 %% Text to be reviewed across more than one paragraph (by senior authors).
-\newenvironment{REVIEWLONG}{\color[HTML]{377eb8}}{\ignorespacesafterend}
+\newenvironment{REVIEWLONG}{%
+  \color[HTML]{377eb8}}{\ignorespacesafterend}
 %% Dummy text.
-\newenvironment{IGNORE}{\color[HTML]{6B6D6E}}{\ignorespacesafterend}
+\newenvironment{IGNORE}{%
+  \color[HTML]{6B6D6E}}{\ignorespacesafterend}
 
 %% Text to revisit.
-\newcommand{\REVISIT}[1]{\textcolor[HTML]{984ea3}{\editlabel{Revisit} #1}}\xspace{}
+\newcommand{\REVISIT}[1]{%
+  \textcolor[HTML]{984ea3}{%
+    \editlabel{Revisit}\@#1}\xspace{}}
 
 %% Ideas to pursue.
-\newcommand{\PENDING}[1]{\textcolor[HTML]{e67e22}{$\cdots$ \editlabel{Pending} \textit{#1} $\cdots$}\xspace{}}
+\newcommand{\PENDING}[1]{%
+  \textcolor[HTML]{e34a33}{%
+    $\cdots$\@\editlabel{Pending}\@\textit{#1} $\cdots$}\xspace{}}
 
 %% Things to do.
-\newcommand{\TODO}[1]{\textcolor[HTML]{e41a1c}{#1}}
+\newcommand{\TODO}[1]{\textcolor[HTML]{e34a33}{#1}}
+\newcommand{\todo}[1]{\textcolor[HTML]{e34a33}{#1}}
 
 %% Issues to address.
-\newcommand{\FIXME}[2]{%
-  \textcolor[HTML]{c0392b}{\textit{FIXME(#1): \textbf{#2}}}}
-\newcommand{\MISSING}[1]{\textcolor[HTML]{de2d26}{\textbf{#1}}}
+\newcommand{\FIXME}[1]{%
+  \textcolor[HTML]{c0392b}{\textit{\textbf{#1}}}}
+\newcommand{\MISSING}[1]{%
+  \textcolor[HTML]{de2d26}{\textbf{#1}}}
 
 %% Recommendation to remove.
-\newcommand{\REMOVE}[1]{%
-  {\small \textcolor{a65628}{#1\\---consider deleting.}}}
+\newcommand{\REMOVE}[1]{
+  {\small \textcolor{a65628}{#1\\--- Consider deleting.}}}
+
+%% Feedback with comments.
+%% Three parts: [...text to be edited/replaced...][replacement][comment or explanation]
+%% (All three parts are optional.)
+%
+\newcommand{\FB}[3]{%
+    \def\textorig{#1}
+    \def\textrepl{#2}
+    \def\textnote{#3}
+    \ifx\textorig\empty
+        %% Nothing to do.
+    \else
+        \textcolor[HTML]{E0E0E0}{[\sout{\textorig}]}%
+    \fi
+    \ifx\textrepl\empty
+        %% Nothing to do.
+    \else
+        \textcolor[HTML]{377eb8}{[\textrepl]}%
+    \fi
+    \ifx\textnote\empty
+        %% Nothing to do.
+    \else
+        \textcolor[HTML]{2E7D32}{[\textit{\textnote}]}
+    \fi}
+\newcommand{\COMMENT}[1]{\FB{}{}{#1}}
 
 \else
 %% Turn off all editing macros.
@@ -339,13 +380,19 @@
 \newcommand{\REVIEW}[1]{#1}
 \newcommand{\REVISIT}[1]{#1}
 
+\newenvironment{REVIEWLONG}{}{}
+
 \newcommand{\PENDING}[1]{}
 \newcommand{\TODO}[1]{}
-\newcommand{\FIXME}[2]{}
+\newcommand{\FIXME}[1]{}
 \newcommand{\MISSING}[1]{}
 \newcommand{\REMOVE}[1]{}
-\newenvironment{REVIEWLONG}{}{}
 \newenvironment{IGNORE}{}{}
+
+%% Feedback with comments.
+%% Remove the contents of the first bracket, retain the second, and ignore the third.
+\newcommand{\FB}[3]{#2}
+\newcommand{\COMMENT}[1]{}
 
 \fi
 
