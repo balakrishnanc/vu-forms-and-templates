@@ -130,6 +130,10 @@
 \iftoggle{DCacmart}{% (acmart template already includes it)
   }{\usepackage{tabularx}}
 %
+%% The package helps in typesetting beautiful in-line colorful text boxes.
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+%
 \usepackage{textcomp}
 %
 \usepackage{threeparttable}
@@ -187,6 +191,60 @@
 \newcommand{\parab}[1]{\vspace{0.02in}\noindent{\textbf{#1}}\quad}
 \newcommand{\parai}[1]{\vspace{0.02in}\noindent{\textit{#1}}\quad}
 \newcommand{\paraib}[1]{\vspace{0.06in}\noindent{\textit{\textbf{#1}}}\quad}
+
+%% Highlight text through colorful boxes.
+%%
+%% Hat-tip:
+%% https://github.com/THS119/LaTeXAestheticTemplate/blob/main/preamble.tex
+%%
+\definecolor{dblue}{RGB}{0,110,185}
+\definecolor{sblue}{RGB}{240,243,250}
+\NewTotalTColorBox[]{\BlkInfo}{+m +m}{
+  notitle,
+  colback=sblue,
+  colbacklower=white, 
+  frame hidden,
+  boxrule=0pt,
+  bicolor,
+  sharp corners,
+  borderline west={1pt}{0pt}{dblue},
+}{%
+  \def\blkihead{#1}
+  \def\blkitext{#2}
+  \textcolor{black}{%
+    \sffamily%
+    \ifx\blkihead\empty
+    \else
+      \textbf{{\color{dgreen}\blkihead}} \\%
+    \fi
+    {\color{black} \blkitext}%
+  }%
+}
+%
+\definecolor{dgreen}{RGB}{0,154,84}
+\definecolor{sgreen}{RGB}{238,247,244}
+\NewTotalTColorBox[]{\BlkHelp}{+m +m}{
+  notitle,
+  colback=sgreen,
+  colbacklower=white, 
+  frame hidden,
+  boxrule=0pt,
+  bicolor,
+  sharp corners,
+  borderline west={1pt}{0pt}{dgreen},
+}{%
+  \def\blkhhead{#1}
+  \def\blkhtext{#2}
+  \textcolor{black}{%
+    \sffamily%
+    \ifx\blkhhead\empty
+    \else
+      \textbf{{\color{dgreen}\blkhhead}} \\%
+    \fi
+    {\color{black} \blkhtext}%
+  }%
+}
+
 
 \newcommand{\case}[0]{$\star$ \xspace}
 \newcommand{\chk}[1]{\vspace{0.02in}\noindent$\square{}$~\textbf{#1}}
