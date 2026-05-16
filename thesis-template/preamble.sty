@@ -1,6 +1,43 @@
 \ProvidesPackage{preamble}
 
 
+\usepackage{etoolbox}
+
+
+\newtoggle{DCacmart}
+\IfClassLoadedTF{acmart}{\toggletrue{DCacmart}}{\togglefalse{DCacmart}}
+
+\newtoggle{DCieee}
+\IfClassLoadedTF{IEEEtran}{\toggletrue{DCieee}}{\togglefalse{DCieee}}
+\IfClassLoadedTF{IEEEoj}{\toggletrue{DCieee}}{}
+
+\newtoggle{DCllncs}
+\IfClassLoadedTF{llncs}{\toggletrue{DCllncs}}{\togglefalse{DCllncs}}
+
+
+%% Do NOT include some packages when using `acmart` template,
+%% since they will be loaded by the class file.
+\iftoggle{DCacmart}{% (acmart template)
+  \typeout{Please verify that each package you use is included in the list of
+    ``accepted'' packages by the ACM publishing system (TAPS):
+    https://authors.acm.org/proceedings/production-information/accepted-latex-packages}%
+}{% (not acmart template)
+  \usepackage{amsfonts}
+  \usepackage{amsmath}
+  \usepackage{amssymb}
+  \usepackage{array}
+  \usepackage{balance}
+  \usepackage{caption}
+  \usepackage{graphicx}
+  \usepackage{tabularx}
+  \usepackage{xcolor}
+}
+
+\iftoggle{DCieee}{%(ieee* template)
+}{% (not ieee* template)
+}
+
+
 \usepackage{array}
 \usepackage[english]{babel}
 \usepackage{booktabs}
